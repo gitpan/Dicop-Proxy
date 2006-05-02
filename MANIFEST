@@ -1,0 +1,51 @@
+BUGS
+CHANGES
+CHANGES-3.00
+INSTALL
+LICENSE
+MANIFEST
+README
+TODO
+SIGNATURE
+setup
+doc/Proxy.pod
+doc/Dicopp.pod
+doc/Trouble.pod
+Makefile.PL
+dicopp				proxy deamon, to act as diocp proxy
+dicop.asc			GnuPG public key
+logs/dummy.txt			to create logs/
+build/wcr			recursive wc
+build/README
+build/gen_help.pl
+t/common.pl
+t/config.t
+t/proxypm.t
+t/test-config/serverp.cfg
+def/request.def
+def/objects.def
+lib/Dicop/Proxy.pm
+lib/Dicop/Proxy/Config.pm
+msg/messages.txt		default messages
+msg/en/messages.txt		ditto
+msg/de/messages.txt		translated
+def/request.def			request pattern definitions
+config/proxy.cfg.sample		proxy config, rename to proxy.cfg
+META.yml			Module meta-data (added by MakeMaker)
+tpl/menu_main.inc
+tpl/header.txt
+tpl/footer.txt
+tpl/basecss.inc
+tpl/main.tpl
+tpl/config.tpl
+tpl/help.txt
+tpl/helptopics.inc
+tpl/help/config.tpl
+tpl/help/trouble.tpl
+tpl/help/files.tpl
+tpl/help/glossary.tpl
+tpl/help/new.tpl
+tpl/help/proxy.tpl
+tpl/style.tpl
+tpl/styles/Spring/header.txt
+tpl/styles/BlueStreak/header.txt

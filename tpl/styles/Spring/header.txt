@@ -1,0 +1,58 @@
+<html>
+<head>
+ <title>
+ ##title##
+ </title>
+ <style type="text/css">
+  <!--
+  ##include_basecss.inc##
+  body
+    {
+    background: white;
+    color: black;
+    }
+  h1, h2, h3, h4, h5, h6, h7, div.menu
+    {
+    background: #10a010;
+    color: #ffff30;
+    }
+  div.text
+    {
+    background: #c0c0c0;
+    color: #202020;
+    }
+  th.auth
+    {
+    background: #606060;
+    color: #d0d0d0;
+    }
+  td
+    {
+    background: #d0d0d0;
+    }
+  td.style
+    {
+    background: #d0d0d0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    }
+  th
+    {
+    background: #606060;
+    color: #d0d0d0;
+    border: 1px solid black;
+    }
+  p
+    {
+    color: #303030;
+    }
+  td.DIR_ODD, td.DIR_RIGHT_ODD
+    {
+    background: #ffffff;
+    }  
+  -->
+  </style>
+</head>
+<!-- for old browser not supporting CSS -->
+<body bgcolor=#ffffff textcolor="#000000">
+

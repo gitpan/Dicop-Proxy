@@ -1,0 +1,21 @@
+
+=pod
+
+=head1 BUGS - Only a dead Bug is a good Bug
+
+=over 2
+
+=item chroot does not work
+
+Setting C<chroot> in the config file might cause problems with
+dynamic module loading as well as host name lookups.
+
+=item SSL support not finished
+
+The SSL support does not quite work - there is not enough documentation
+to get it going.
+
+=back
+
+=cut
+

@@ -1,0 +1,288 @@
+
+=pod
+
+=head1 INSTALL
+
+If you haven't read the README yet, you are advised to do so now before
+continuing reading this document.
+
+You can read this document also via 'perldoc INSTALL', this gets rid of the
+funny =something lines ;)
+
+More help is available via C<perldoc doc/Proxy>.
+
+=head2 Quick guide for the impatient
+
+After untaring/unzipping it, you need first to verify the package.
+
+Download our GnuPG key from http://www.bsi.bund.de/produkte/dicop/download.htm
+then do:
+
+	gpg Dicop-Proxy-3.00_2.tar.gz.sig
+
+If the signature does not verify ok, please notify us immidiately. B<DO NOT>
+run perl Makefile.PL or anythign else nor install the package when the
+signature cannot be verified ok. B<Your system might get compromised!>.
+
+If the signature was okay, build a Makefile, then run "make" to create all the
+neccessary files and then run the testsuite to make sure it really works on
+your system:
+
+	tar -xzf Dicop-Proxy-3.00_2.tar.gz.sig
+	perl Makefile.PL
+	make
+	make test
+
+Read below on how to proceed further.
+
+=head2 Verify the siganture
+
+Download our key from our website http://www.bsi.bund.de/produkte/dicop/
+and then do:
+	
+	gpg Dicop-Proxy-3.00_2.tar.gz.sig
+
+If the signature does not verify ok, please notify us immidiately. B<DO NOT>
+run perl Makefile.PL or anythign else nor install the package when the
+signature cannot be verified ok. B<Your system might get compromised!>.
+
+If the signature was okay, proceed.
+
+=head2 Unpacking
+
+When using C<dicopp>, you can unpack the tarball to any directory you like and
+you do not need a running Apache (except as ating as a file server to serve
+workers and target files to the clients, but the file server can be located at
+a different machine).
+
+After downloading, unzip and untar with:
+
+	tar -xzf Dicop-Proxy-3.00_2.tar.gz
+
+Replace "3.00_2" with the actual version you got.
+
+The proxy part (e.g. the C<dicopp> daemon) is supposed to run under some sort of
+Linux, or Mac OS X. Windows or Cygwin are currently not untested and unsupported.
+
+After untaring/unzipping it, you need first to build a Makefile, then run "make"
+to create all the neccessary files and then run the testsuite to make sure it
+really works on your system.
+
+Actually "installing" is B<not> neccessary, you can run the C<dicopp>
+directly from the build directory.
+
+
+=head2 Creating the Makefile
+
+Change to the directory where you unpacked the tarfile and type 
+
+	perl Makefile.PL
+
+This will tell you about missing modules. Download and install them and then
+retry this step until it finished without warnings. See the next heading for
+how to find and download modules.
+
+The warnings you might encounter are:
+
+	Warning: prerequisite Bar::Baz failed to load
+	Warning: prerequisite Bar::Baz vx.yz not found
+
+or similiar things. The first tells you that the module was not found at all,
+the second tells you that you do have an older version only and need to install
+a sufficient new version.
+
+After installing/upgrading all the nec. modules (see below), you can retry the
+
+	perl Makefile.PL
+
+in the dicop build directory and it should print out no more warnings.
+
+=head2 Where to find Missing modules
+
+If some modules are missing in your Perl installation, then you need to get
+them and install them. You can get them from CPAN L<http://search.cpan.org>/
+or L<http://www.cpan.org/>.
+
+Install the modules via the same commands for each of them:
+
+	perl Makefile.PL
+	make test
+	make install
+
+Some modules depend on others, you must resolve these dependencies by
+installing in the right order. You can also use the CPAN shell for
+an automated way to install modules and resolve their dependencies.
+
+You can check whether a particulary module is installed and which version it
+has by doing (example for Digest::MD5):
+
+	perl -MDigest::MD5 -e'print "$Digest::MD5::VERSION\n";'
+
+on the commandline. Or shorter:
+	
+	perl -MDigest::MD5\ 99
+
+It either prints the currently installed version or failes with something
+like 'module not found'.
+
+You will also need a C<make> program. Under Linux onboard, under a different
+OS you might need to install one along with a compiler.
+
+=head2 Running the testsuite
+
+When writing the makefile finally went okay, follow with:
+
+	make
+	make test
+
+If some tests fail, please email us the output. 
+
+When all tests pass, you B<COULD> theoretical type (as root):
+
+	make install
+
+but we do B<NOT> recommend this. It is not neccessary to do make install
+to run C<dicopp>! C<make install> would install some Perl modules into your
+Perl's site-perl tree. But it is much easier to have them all in one place
+together with the data files for upgrading etc.
+
+=head2 After build
+
+You need to renaming a couple of files and adjust some things to meet your
+needs before starting C<dicopp> for the first time:
+
+=over 2
+
+=item chroot
+
+For a chroot environment (the default), you need to create a directory C<etc/>
+and copy C</etc/protocols> into it.
+
+=item config
+
+Look into C<config> and copy the C<filename.cfg.sample> files to
+C<filename.cfg> and then edit them to match your configuration. 
+Do this B<only> if you are installing the proxy for the first time.
+If you already have an older version installed, have a look into the sample
+configuration files to see if anything has changed, and then take over
+possible changes into your own config files.
+
+You can find this out by doing:
+
+	diff -ruN config/proxy.cfg config/proxy.cfg.sample 
+
+This will show you the differences between your config file, and the new
+default sample file.
+
+If you haven't done already so, you very probably need to change port,
+hostname and mailserver and some other settings like user/group, as well as
+upstream and file server URLs.
+
+=item user/group
+
+You must make sure that the user and group specified in C<proxy.cfg> actually
+exist. You can create them on most systems with a command similiar to this:
+
+	groupadd GROUP
+	useradd -g GROUP USER
+
+Replace I<GROUP> by the name of the group (f.i. 'dicop') and I<USER> with the
+user name (f.i. 'dicop', too).
+
+=item permissions
+
+You also need to adjust the permissions of the directories/files to match the
+group and user. Create a new user and group that match the user and group name
+you specified in C<proxy.cfg> and then set the correct file ownership for
+all files including the parent directory. 
+
+So make sure that the directory containing the proxy is B<also> read/writable
+for the user you want C<dicopp> to run under. (For creating logfiles etc).
+
+For instance, if you untarred Dicop-2.21 into /home/dicop/, then do (assuming
+your user and group are called 'dicop', otherwise replace dicop.dicop with the
+user.group you want to use):
+
+	chown -R dicop.dicop /home/dicop/Dicop-Proxy-3.00
+
+Replace C</home/dicop..> with the actual directory where you unpacked the data.  
+
+=back
+
+=head2 Administration and further testing
+
+You need to start C<dicopp> B<as root> from a console with one of the
+following two ways:
+
+	./dicopp 2>>stderr.log
+	./dicopp 2>>stderr.log &
+
+The first variant enables you to see eventual error messages, the second one
+puts it into the background and the error messages into a file called
+C<stderr.log>. If you experience troubles, check also the log files in
+C<logs/error.log> for more error messages.
+
+You should do this B<as root>, since the deamon needs to switch itself shortly
+after the start to the actual user/group specified in the config file!
+
+Beware that closing a SSH or telnet session from where you started it by
+simple killing the X-window might kill the background process, too! Logout
+before closing the session seems to work around this problem.
+
+The startup should be more or less instant. If it isn't, check that you don't
+have another proxy instance already running on the same machine.
+
+You can then connect to the running proxy with your favourite broswer via:
+
+	http://host:port/
+
+for instance
+
+	http://127.0.0.1:8889/
+
+if your web browser runs on the same machine than the C<dicopp> proxy.
+
+To shut the proxy down, just issue a kill command on the console:
+
+	killall dicopp
+
+This can be done at any time.
+
+If you did run C<dicopp> in the foreground, pressing CTRL-C will stop it.
+
+=head2 Registering the proxy
+
+You need to register the proxy with the main server. Go to your dicop server
+(See Dicop-Server package for instructions on how to install it) and
+click on "Add proxy" in the menu. Follow the instructions there.
+
+=head2 Letting clients use the proxy
+
+To have a client use the proxy, simple replace the
+C<--server=dicop-server:port> with appropriate C<--server=dicop-proxy:port>
+setting e.g.
+
+	perl client --id=1234 --server=192.168.1.2:8889
+
+The client will not notice any difference between using the main server
+directly, or going via proxy.
+
+=head2 Documentation
+
+Please have a look into C</doc>, you will find there help files in pod format.
+
+If you have any more questions, please send us an email. We accept encrypted
+mail, please use the key attached as C<dicop.asc>.
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut
+

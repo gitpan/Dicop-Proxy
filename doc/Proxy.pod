@@ -1,0 +1,283 @@
+=pod
+
+=head1 NAME
+
+PROXY - The internal details of a server acting as a proxy.
+
+Last update: 2005-02-15 
+
+=head1 OVERVIEW
+
+The typical server setup looks like this:
+				
+				+--------+
+				| Server |
+				+--------+
+				    |
+      +------------+-----------+----+--------------------+
+      |		   |	       |		         |
+  +--------+  +--------+  +--------+                 +--------+
+  | Client |  | Client |  | Client |                 | Proxy  |  
+  +--------+  +--------+  +--------+                 +--------+
+							 |
+					     +-----------+------------+
+					     |           |            |
+ 					 +--------+  +--------+  +--------+ 
+					 | Client |  | Client |  | Client |
+					 +--------+  +--------+  +--------+ 
+
+In addition, here is the picture with file servers included:
+
+				+--------+----------------------+
+				| Server | File server (Apache) |
+				+--------+----------------------+
+				    |
+      +------------+-----------+----+------------+
+      |		   |	       |		 |
+  +--------+  +--------+  +--------+         +--------+ +-------------+
+  | Client |  | Client |  | Client |         | Proxy  | | File server |
+  +--------+  +--------+  +--------+         +--------+ +-------------+
+					  	 |             |
+					     +-----------+------------+
+					     |           |            |
+ 					 +--------+  +--------+  +--------+ 
+					 | Client |  | Client |  | Client |
+					 +--------+  +--------+  +--------+ 
+
+Note that file servers can either run at the same machine than the server, or
+the proxy, or on a totally different machine.
+
+In this case we focus on the proxy part. A C<Dicop::Proxy> works almost
+like a C<Dicop::Server>, with a few notable exceptions:
+
+=over 2
+
+=item *
+
+Instead of C<dicopd> you use C<dicopp> to start the proxy
+
+=item *
+
+The proxy does not read in data, and also never writes out data. It simple
+relays client connections to the main server.
+
+=item *
+
+The proxy answers file requests with it's own file server settings.
+
+=back
+
+The first sections in L<Dicop.pod> also apply.
+
+The main reasons for deploying a proxy are:
+
+=over 2
+
+=item Reducing the load on the main server
+
+Due to caching the load on the main server is reduced. Also, DOS (or other)
+attacks on the proxy will not effect the main server, thus protecting it.
+
+=item Restricting access
+
+You can restrict access to the proxy more tightly, thus disallowing normal
+clients from viewing any status page, and restricting the administration at
+the main server to only certain clients.
+
+Clients behind the proxy can only request work, testcases and files and
+submit their results. The can never view any status pages at the server,
+nor is it possible to administrate the server via the proxy.
+
+=back
+
+Currently the proxy can only be connected by normal clients, not by other
+proxies in itself. So you can not chain proxies together. This will probably
+resolved some time in the future.
+
+There are two things that reduce the load on the main server:
+
+=over 2
+
+=item less requests
+
+For instance, requests for file URLs can be served by the proxy independently.
+
+In other cases, the result of some connect can be cached and on subsequent
+client requests re-send to the client. For instance a request for test-cases
+could be answered from the cache, and only from time to time the proxy needs
+to contact the server for the actual list of test cases.
+
+=item less connects
+
+Each connect has a certain overhead, no matter how many requests the client
+sends to the server per connect. By serving certain requests locally the
+proxy eliminates the need to connect the server.
+
+By eliminating the number of requests send to the server, it is also possible
+to eliminate the need for some connects entirely. Especially if there is only
+one request (like a request for a file or a test case), the connect to the
+server is not neccessary at all.
+
+In other cases, it is possible to delay sending requests to the server,
+group them together and only send them together. By sending, for instance,
+16 requests with each connect, instead of two or three, the number of connects
+is reduced and the same number of requests causes less CPU overhead on the
+server.
+
+=back
+
+=head1 PROXY - CLIENT CONNECT
+
+Upon a connect from a client, the proxy  does the following:
+
+	check if the request format is ok
+	check if the client authentication is ok (only a basic check, since
+	 the proxy does not know the list of valid clients)
+	if anything is ok, look for status request
+
+        status request and other requests together: error
+	status request and no other requests: 
+          deliver status if client is allowed to view it, be done
+
+	cache all report requests, and generate (dummy) responses for them
+	answer all requests for work and testcases from the cache
+	  if cache is empty, talk to upstream server and get new work
+	if a report with a success status comes in, report it back to server
+	send back all responses to client in one go
+
+=head1 DIFFERENT REQUEST TYPES
+
+Depending on the request type of the client, the proxy does different things.
+
+XXX TODO: This section does not apply yet.
+
+=over 2
+
+=item report work/testcases back (DONE)
+
+These report will be answered with a dummy answer (basically: "Thanx!") and
+sorted into the send cache.
+
+=item report work/testcases back (SOLVED)
+
+These report will be answered with a dummy answer (basically: "Thanx!") and
+sorted into the send cache. Then a talk to the server is scheduled to happen
+as soon as possible (aka: before the next client connects, so that it can run
+between the two client connects)
+
+=item report work/testcases back (FAILED)
+
+These report will be answered with a dummy answer (basically: "Oups!") and
+will be marked in the chunk cache as failed. Failed chunks will be given
+to the next client after a certain time frame. If a chunk fails more than one
+time, it can get too old and dies (is removed from the chunk cache). This
+is to prevent the proxy from handing out stale work that is handed out by the
+server to another client/proxy.
+
+=item request work
+
+When a client requests work, the proxy looks into it's chunk cache to see if
+a fitting chunk is available. If yes, this is handed out to the client.
+Otherwise, the send cache is sent to the server, and simultanously the chunk
+cache is filled with chunks from the server. If there is still no chunk for
+the client, or the client is denied by the server, an error is sent back to
+the client. Otherwise the requested work are sent back.
+
+=item request testcase
+
+The testcases are cached and sent back to the client from this cache. The
+testcase cache is invalidated every now and then (default: 24 hours) and
+the next time the talk to the server occurs, the testcase cache is refilled
+with the newest list of testcases.
+
+=back
+
+=head2 ADMINISTRATIVE MESSAGES
+
+The server and proxy will exchange messages for administrative purposes. For
+instance the server might tell the proxy that one job got closed, and thus the
+proxy must purge all chunks in his chunk cache for that particulary job.
+
+=head2 ACCESS RESTRICTIONS
+
+The proxy knowns only the requests it can handle, this is for security reasons.
+
+All other requests will be denied as "invalid request".
+
+=head1 ENSURING DATA INTEGRITY
+
+All the data is stored at the server, and a proxy has only temporary caches.
+Thus the proxy never writes any data back to disk, and there is no need to
+backup anything.
+
+In the event of a system crash or when the proxy process dies, the temporary
+data will be lost. Since the proxy reports back to a server in regular
+intervalls, only some data for the last hour (or so) will be lost. This will
+be handled transparently by the server and should occur so seldom that it won't
+impact performance (much).
+
+=head1 PERFORMANCE
+
+The proxy should have roughly the same performance than a server.
+
+It is not yet sure how much of the data transfer and thus request-handling
+time at the server a proxy will save.
+
+Requests for testcases are seldom, but if you have 30 clienst restarted each
+day, you save 29 requests for testcases at the main server. A more important
+role play the savings trough caching the requests/reports for work, and with
+a setting of caching 4 chunks for each client connect, it is envisioned that
+a proxy could save about 50% of all connects to the server. It is still
+unclear  how much time this will save, though, since eventually the same
+number of requests must be made to the server, only that they are then more
+compact (e.g. more requests per connect simultanously).
+
+Fewer connects with more reqests per connect assume that there is an overhead
+per connect that can be saved.
+
+=head2 Maximum possible clients
+
+The proxy should be able to handle roughly the same number of clients as
+the server, if both have equivalent hardware. So with a load of about 25% the
+following machines will be able to handle roughly:
+
+=over 2
+
+=item 200 Mhz AMD K-6
+
+300 clients
+
+=item 866 MHz PIII (mobile)
+
+20000 clients
+
+=item 2.1 GHz AMD Athlon (TBred)
+
+60000 clients (estimated)
+
+=back
+
+The numbers are per hour and derived from a benchmark done in August 2002
+under DiCoP v2.20 and Perl v5.8.0.
+
+If your clients connect the server twice per hour, halve the values, if they
+connect every other hour, double them.
+
+=head2 Network performance
+
+Since the proxy caches things, the network traffic to the server should also
+be reduced. But since only a few bits are exchanged anyway, this will probably
+not have much impact.
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut
+

@@ -1,0 +1,84 @@
+
+=pod
+
+=head1 History revision for DiCoP
+
+This document details the complete changes from v3.01 onwards.
+
+v3.00 was seperated from Dicop-Server and is the first real, working version.
+
+=head2 2006-05-02 (Proxy v3.02)
+
+No functional changes:
+
+=over 2
+
+=item fixed
+
+	Makefile.PL: use YAML to generate better META.yml
+		     use PREREQ_FATAL
+		     need Linux::Cpuinfo are prereq
+	fix (c) dates, contact address etc
+	make a non-beta version for release
+	add a SIGNATURE again (for CPAN release)
+	wcr lib: Total: lines 685, words 2225, chars 16848
+	33 tests
+
+=back
+
+=head2 2005-06-22 (Proxy v3.01 build 3)
+
+=over 2
+
+=item added
+
+	Trouble.pod: explain /etc/protocols and chroot environments
+	setup - check and setup a new proxy installation
+
+=item fixed
+
+	amend NEW
+	wcr lib: Total: lines 685, words 2225, chars 16848
+	33 tests ()
+
+=back
+
+=head2 2005-06-20 (Proxy v3.01 build 2)
+
+=over 2
+
+=item fixed
+
+	adjust requirements in Makefile.PL:
+	  Dicop-Base minimum build 3 
+	  Math-BigInt v1.77
+	  Net-Server v0.86
+	version-depended test
+	default config file config/proxy.cfg.sample
+	wcr lib: Total: lines 685, words 2225, chars 16848
+	33 tests ()
+
+=back
+
+=head2 2005-02-16 (Proxy v3.01 build 1)
+
+=over 2
+
+=item fixed
+
+	wcr lib: Total: lines 685, words 2225, chars 16849
+	33 tests ()
+
+=back
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2005
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut

@@ -1,0 +1,72 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.53.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 1b8de92478e5c78cc94e8fccd0d00d9ec10ed47c BUGS
+SHA1 644bf80c9210a82329adcb753de8b77852cc2af0 CHANGES
+SHA1 91b266e71d44393bca23d5da8acd362a107048e1 CHANGES-3.00
+SHA1 6c6ce5d15095167c0bde20f8aa7e0198e956bdb8 INSTALL
+SHA1 ba74339534569e38ec71285aa16ae3113634facd LICENSE
+SHA1 786b9930832e783a55b6b19714f536effff614e0 MANIFEST
+SHA1 59eb5723e915f5fd1a7e10522a9ccf763b461e86 META.yml
+SHA1 403b621bf0ffee4d0c4593b0d169123a77b0c6a4 Makefile.PL
+SHA1 925eeebc54ffa0480ae87b275ad81a83c6d5071f README
+SHA1 be00ca16e5d9cd5ed67abf38391d514f8d685940 TODO
+SHA1 b149da99429fbf65c8d51aa484ad9f77f6aa3633 build/README
+SHA1 a3dac4887e6beca31a27063f446fe51a2d2adf3d build/gen_help.pl
+SHA1 3ca0847051bb56dc7f5a66d4ed81a38e96055bec build/wcr
+SHA1 3e1e2fcc3b6c3976b0853315ff01c2b62b8eaea0 config/proxy.cfg.sample
+SHA1 d2b16402233831e7498bc58862bde7f098788e59 def/objects.def
+SHA1 a2adf45d605a27966cf44824ba6393dc425033c2 def/request.def
+SHA1 35e4359f8ec7659158e149eb7d71c11d61274d33 dicop.asc
+SHA1 1a39159595e0acefd042f97ca7bad42cde8f4ae1 dicopp
+SHA1 01e9c8762c63addea6496fb2aa5cc8f35e572376 doc/Dicopp.pod
+SHA1 dbf46d61c8564f71889b0d03691d9d33d3726e23 doc/Proxy.pod
+SHA1 7b9d58d92fdfc924bf6be8d51029a3a13c7c0448 doc/Trouble.pod
+SHA1 3a04431909094fc46b36f8aa5999ec059cb75faf lib/Dicop/Proxy.pm
+SHA1 371905ddfb243d230cf46c0c7b04f50494144f66 lib/Dicop/Proxy/Config.pm
+SHA1 da39a3ee5e6b4b0d3255bfef95601890afd80709 logs/dummy.txt
+SHA1 d8e8ef45b5ce239a7cc9a3c0813d6ba3ef389172 msg/de/messages.txt
+SHA1 d8e8ef45b5ce239a7cc9a3c0813d6ba3ef389172 msg/en/messages.txt
+SHA1 77a77684c6fea336d0e9dcf2697cd504e8022d5c msg/messages.txt
+SHA1 01480b2aa31f358dc579f2eb045b8b3f885d85b7 setup
+SHA1 e357d7568fb5d2d0bd0e36af47b24dcab3f06cc5 t/common.pl
+SHA1 6df275d3db57cd1b98cdb64b6681b00075ce2d5a t/config.t
+SHA1 478187b8c0040e527373b4082ac0e600dbfa0679 t/proxypm.t
+SHA1 17f9caa1b3541d76543cd66db069052c252b0971 t/test-config/serverp.cfg
+SHA1 1bebe198790587ff99435280e60fdc85e9b8eb49 tpl/basecss.inc
+SHA1 2744c121d7c0a763515c86f856c6617a67429f4e tpl/config.tpl
+SHA1 ffd31d2fa090170ea63889421a112a070413c4ce tpl/footer.txt
+SHA1 1fe3a5cc93a30be03b4d1a9a498031c85e1262a2 tpl/header.txt
+SHA1 009d3371e8c1e6614d7a2608f34c9c48252064e7 tpl/help.txt
+SHA1 902f08e39e97cef1f749711d4a43a06f8b40bbc9 tpl/help/config.tpl
+SHA1 210c5455ea66301f5b97489129d6b81ac30ccaeb tpl/help/files.tpl
+SHA1 23bd6cf18a3a098cb2ee5d9f767621b004dccefb tpl/help/glossary.tpl
+SHA1 b375046cc104a312262e2a88ca141f540e2edf32 tpl/help/new.tpl
+SHA1 2d75fb21ede089bee9c2f681d09a9726f514c17a tpl/help/proxy.tpl
+SHA1 12d1d7cce27780e88716f693fc25bc93cc107c5b tpl/help/trouble.tpl
+SHA1 dcc9665e69418b490e0cc9cd41bfc6653aaee68e tpl/helptopics.inc
+SHA1 f97ff4dffc4175c14ec812d9e890832668f36dd7 tpl/main.tpl
+SHA1 eb904336f035c9810ab43b504c71ce1fe7978ca9 tpl/menu_main.inc
+SHA1 c58b58d6091c085a0da6f02d634691ad9439b3d8 tpl/style.tpl
+SHA1 621516374c0eced14d3443512333c96a3435bf85 tpl/styles/BlueStreak/header.txt
+SHA1 ba28a6dbe1b813a4f0f6dee581ebb44e896e1f0e tpl/styles/Spring/header.txt
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+
+iD8DBQFEVzP5YmqMGoA0pxgRAuqxAJ9ir8oOUjBNQXlcAMjU5p0veeX6LQCbBqw/
+26tH/lC2QxT8VPleh5V82vM=
+=iw0X
+-----END PGP SIGNATURE-----

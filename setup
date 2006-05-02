@@ -1,0 +1,172 @@
+#!/usr/bin/perl -w
+
+#############################################################################
+# This script sets up certain files and things that are necessary before
+# running dicopp for the first time.
+#
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 2004-2005
+#
+# DiCoP is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License version 2 as published by the Free
+# Software Foundation.
+#
+# See the file LICENSE or L<http://www.bsi.de/> for more information.
+#############################################################################
+
+#############################################################################
+# VERSION history:
+# 2005-06-22 0.01
+#   * taken over from Dicop-Server's setup
+
+use strict;
+use File::Spec;
+use lib 'lib';
+use Dicop::Config;
+use Dicop::Proxy::Config;			# to find user/group settings
+use Dicop::Base qw/read_file random a2h/;
+
+BEGIN
+  {
+  $|++;	# output buffer off
+  }
+
+#############################################################################
+print "\nDiCoP-Proxy Setup v0.01\n";
+print " (c) Bundesamt fuer Sicherheit in der Informationstechnik 2004-2005\n\n";
+
+print " Usage:  ./setup [config_file]\n\n";
+
+my $cfg_file = shift || 'config/proxy.cfg'; 
+
+print "Reading config $cfg_file file to find out your settings...\n";
+
+#############################################################################
+print "Copying and checking config file...\n";
+  copy_file (File::Spec->catfile('config', 'proxy.cfg.sample'));
+print "Done.\n\n";
+
+my $cfg = Dicop::Config->new($cfg_file);
+
+if (ref($cfg) ne 'Dicop::Config')
+  {
+  die ("Couldn't read config file $cfg_file: $!");
+  }
+
+# basic check for keys/values/types
+my $allowed_keys = Dicop::Proxy::Config::allowed_keys();
+my $check = $cfg->check($allowed_keys);
+
+die($check) if $check;
+
+#############################################################################
+my $log_dir = $cfg->get('log_dir') || 'logs';
+my $tpl_dir = $cfg->get('tpl_dir') || 'tpl';
+my $mail_dir = $cfg->get('mailtxt_dir') || 'mail';
+my $user = $cfg->get('user');
+my $group = $cfg->get('group');
+
+#############################################################################
+
+print "Creating directories...";
+for my $dir ( $log_dir, $tpl_dir)
+  {
+  if (!-d $dir)
+    {
+    print " Creating $dir...\n";
+    mkdir $dir; 
+    }
+  }
+print "Done.\n\n";
+
+#############################################################################
+print "Creating etc/ and copying /etc/protocols to it...";
+
+mkdir ('etc/', 0755);
+my $src = File::Spec->catdir('/etc', 'protocols');
+my $dst = File::Spec->catdir('./etc', 'protocols');
+
+`cp $src $dst`;
+print "Done.\n\n";
+
+#############################################################################
+print "Touching files in $log_dir/...";
+`touch $log_dir/error.log`;
+`touch $log_dir/server.log`;
+print "Done.\n\n";
+
+#############################################################################
+# This is actually not neccessary, since the server will create/delete them
+# automatically as long as it has permissions on its directory:
+
+print "Touching lock files...";
+`touch dicop_lockfile`;
+`touch dicop_log_lock`;
+`touch dicop_request_lock`;
+
+#############################################################################
+print "Done\n\nLooks like your proxy will use '$user' and '$group' as user and group.\n";
+print "Now trying to create the user and group...\n";
+
+print ' '; print `groupadd $group`;
+print ' '; print `useradd $user`;
+
+print "Done.\n\nNow setting permissions for $user/$group...";
+
+my $chown = $user . '.' . $group;
+
+print `chown $user.$group * -R`;
+# own our "parent" directory, so that dicopd can create/delete lock files
+print `chown $user.$group .`;	
+
+print "Done.\n\nSetup complete.\n";
+
+print "\n\nYou should check '$cfg_file' to be complete and correct.\n\n";
+
+1;
+
+#############################################################################
+# helper sub routines
+
+sub copy_file
+  {
+  my $src = shift;
+
+  return unless -f $src;
+  return unless $src =~ /\.sample$/;
+  
+  my $des = $src; $des =~ s/\.sample$//;
+
+  if (-f $des)
+    {
+    print " '$des' already exists, skipping it.\n";
+    return;
+    }
+
+  print " copy $src => $des\n";
+  `cp $src $des`;
+  }
+
+sub copy_dir
+  {
+  my $dir = shift;
+
+  my @files = read_dir($dir);
+  for my $file (@files)
+    {
+    my $src = File::Spec->catfile($dir, $file);
+ 
+    copy_file($src);
+    }
+  }
+
+sub read_dir
+  {
+  my $dir = shift;
+
+  opendir DIR, $dir or die ("Can't read dir '$dir': $!");
+  my @files = readdir DIR;
+  closedir DIR;
+
+  @files;
+  }
+

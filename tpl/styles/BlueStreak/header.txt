@@ -1,0 +1,75 @@
+<html>
+<head>
+ <title>
+ ##title##
+ </title>
+ <style type="text/css">
+  <!--
+  ##include_basecss.inc##
+  body
+    {
+    background: white;
+    color: black;
+    }
+  h1, h2, h3, h4, h5, h6, h7, div.menu
+    {
+    background: #2020d0;
+    color: #ffffff;
+    }
+  div.text
+    {
+    background: #c0c0c0;
+    color: #202070;
+    }
+  th.auth
+    {
+    background: #606060;
+    color: #d0d0f0;
+    }
+  td
+    {
+    background: #d0d0d0;
+    }
+  td.style
+    {
+    background: #d0d0d0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    }
+  th
+    {
+    background: #505080;
+    color: #d0d0f0;
+    border: 1px solid black;
+    }
+  p
+    {
+    color: #101060;
+    }
+  td.DIR_ODD, td.DIR_RIGHT_ODD
+    {
+    background: #f0f0ff;
+    }
+  a:link.m {
+    color: #f0f0ff;
+    padding: 3px;
+    margin: 0;
+    }
+  a:visited.m {
+    color: #f0f0ff;
+    padding: 3px;
+    margin: 0;
+    }
+  a:hover.m, a:hover {
+    background-color: #ffffff;
+    border: black 1px solid;
+    padding: 2px;
+    margin: 0;
+    color: blue;
+    } 
+  -->
+  </style>
+</head>
+<!-- for old browser not supporting CSS -->
+<body bgcolor=#ffffff textcolor="#000000">
+

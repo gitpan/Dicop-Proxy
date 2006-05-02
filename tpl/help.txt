@@ -1,0 +1,19 @@
+
+##include_menu_main.inc##
+
+<h1>DiCoP Proxy - Help</h1>
+
+<div class="text">
+
+<p>
+Available help topics:
+</p>
+
+<ul>
+
+##include_helptopics.inc##
+
+</ul>
+
+</div>
+

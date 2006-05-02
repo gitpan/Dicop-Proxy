@@ -1,0 +1,19 @@
+---
+name: Dicop-Proxy
+version: 3.02
+version_from: ''
+license: gpl
+distribution_type: module
+generated_by: Dicop-Proxy version 3.02
+installdirs: site
+requires:
+  Dicop::Base: 3.02
+  Digest::MD5: 2.09
+  File::Spec: 0.82
+  HTML::Tagset: 3.03
+  HTTP::Request: 1.24
+  Linux::Cpuinfo: 1.7
+  Math::BigInt: 1.77
+  Net::Server: 0.86
+  Test::Simple: 0.47
+  Time::HiRes: 1.2

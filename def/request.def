@@ -1,0 +1,136 @@
+#############################################################################
+#
+# request.def  definition file for requests (aka messages between client
+# and server).
+
+# This file is only read upon startup of the server - any changes here will
+# not be in effect until you shutdown and restart the server process!
+
+#############################################################################
+# status pages
+
+{
+  match = "cmd_status;type_main"
+  output = "html"
+  title = "Proxy Status"
+  class = "status"
+  auth = 0
+}
+
+{
+  match = "cmd_status;type_style"
+  output = "html-table"
+  title = "Select style"
+  class = "status"
+  auth = 0
+}
+
+{
+  match = "cmd_status;type_config"
+  title = "Configuration"
+  output = "html-table"
+  class = "admin"
+  auth = 0
+}
+
+{
+  match = "cmd_help;type_list"
+  title = "Help Overview"
+  tpl = "help.txt"
+  class = "status"
+  auth = 0
+}
+
+{
+  match = "cmd_help;type_/^(config|files|glossary|new|proxy|trouble)\z"
+  title = "Help"
+  tpl = "help/##request-type##.tpl"
+  class = "status"
+  auth = 0
+}
+
+#############################################################################
+# request something
+     
+{
+  match = "cmd_request;type_file"
+  type = "request"
+  req = "name"
+  output = "text"
+  class = "work"
+  auth = 0
+}
+
+{
+  match = "cmd_request;type_test"
+  type = "request"
+  req = "name"
+  req = ""
+  output = "text"
+  class = "work"
+  auth = 0
+}
+
+{
+  match = "cmd_request;type_work"
+  type = "request"
+  req = "name"
+  req = "size"
+  opt = "count"
+  output = "text"
+  class = "work"
+  auth = 0
+}
+
+#############################################################################
+# report back results
+
+# TODO: don't send chunk to client, so don't expect it back. This needs a
+# hash with the tokens (token => chunknumber) per job, each entry is made
+# when a chunk is issued, and deleted when the chunk comes back.
+
+{
+  match = "cmd_report"
+  req = "job,status,took,token,crc,chunk"
+  opt = "result,reason"
+  type = "other"
+  output = "text"
+  class = "work"
+  auth = 0
+}
+
+#############################################################################
+# auth requests, example:
+#   arch_win32;cmd_auth;fan_5360;id_5;temp_43.2;version_0.24
+{
+  match = "cmd_auth"
+  req = "arch,id,version"
+  opt = "chatter,cached,fan,temp,os,cpuinfo,user,pass,id,pid"
+  type = "auth"
+}
+
+#############################################################################
+# info requests, example:
+#   arch_win32;cmd_info;fan_5360;id_5;temp_43.2;version_0.24;ip_127.0.0.1;for_req0001
+{
+  match = "cmd_info"
+  req = "arch,id,version,ip,for"
+  opt = "chatter,cached,fan,temp,os,cpuinfo,id,pid"
+  type = "info"
+}
+
+#############################################################################
+# All requests that don't match any of the patterns above are automatically
+# invalid and rejected.
+
+# AUTHOR
+#
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2004
+#
+# DiCoP is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License version 2 as published by the Free
+# Software Foundation.
+#
+# See L<http://www.bsi.de/> for more information.
+#
+

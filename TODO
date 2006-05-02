@@ -1,0 +1,47 @@
+
+=pod
+
+=head1 Todo (laundry list)
+
+You can read this file better with C<perldoc TODO>.
+
+=head2 Misc.
+
+=over 2
+
+=item *
+
+The server greets the proxy, but not the client. Make it send
+over a greeting to the client, so that the proxy can relay this greeting
+to the client instead of saying "Helo unknown". (Or replace server greeting
+with proxy greetin the client?)
+
+=item *
+
+Better logging and error checking need to be implemented.
+
+=item *
+
+Add a client_min_id and client_max_id setting to the config file and the
+only allow clients in that range to connect.
+
+=back
+
+=head2 Proxy chaining
+
+The proxy cannot yet handle connections from other proxies - it needs to
+rewrite the incoming requests for the server differently than when a client
+connects.
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de> for more information.
+
+=cut
+

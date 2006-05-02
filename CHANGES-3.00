@@ -1,0 +1,225 @@
+
+=pod
+
+=head1 History revision for DiCoP
+
+This document details the complete changes from v3.00 onwards.
+
+v3.00 was seperated from Dicop-Server and is the first real, working version.
+
+=head2 2005-02-15 (Proxy v3.00 build 12)
+
+=over 2
+
+=item fixed
+
+	require Base build 80
+	require Math::BigInt v1.74
+	wcr lib: Total: lines 685, words 2225, chars 16849
+	33 tests ()
+
+=back
+
+=head2 2004-11-11 (Proxy v3.00 build 11)
+
+=over 2
+
+=item added
+
+	preliminary SSL support
+
+=item fixed
+
+	amended default config ("stats" not supported by proxy)
+	replace print to STDERR with output()
+	amended README, INSTALL
+	Makefile: check for SSL packages being installed
+	require Base build 67
+	Proxy: use _connect_server() and _load_connector() from Base
+	wcr lib: Total: lines 685, words 2225, chars 16849
+	33 tests ()
+
+=back
+
+=head2 2004-09-23 (Proxy v3.00 build 10)
+
+=over 2
+
+=item added
+
+	_client_from_info(): called by request_file() from Base, so add stub
+
+=item fixed
+
+	send only one info request to server (instead one for each request)
+	wcr lib: Total: lines 755, words 2515, chars 19075
+	33 tests (only one info request)
+
+=back
+
+=head2 2004-09-22 (Proxy v3.00 build 9)
+
+=over 2
+
+=item added
+
+	Proxy: report() - handle client reports successfully
+	remap server responses back to client request (_req_remap)
+
+=item fixed
+
+	require Base build 53 (workaround Linux::Cpuinfo bug)
+	request id's on sending were skipping one number like
+	 0001,0002,0004,0005,0007,0008,...
+	removed needless Dumper() in request_work()
+	wcr lib: Total: lines 734, words 2423, chars 18556
+	28 tests (request_work/request_test/report/remap)
+
+=back
+
+=head2 2004-09-14 (Proxy v3.00 build 8)
+
+=over 2
+
+=item fixed
+
+	output() to $self->output() and only print if $self->{debug} > 0
+	set $self->{no_file_check} to get request_file() to work
+	'fake' to 'unknown' - greet client as unknown
+	wcr lib: Total: lines 710, words 2354, chars 18055
+	21 tests ()
+
+=back
+
+=head2 2004-09-13 (Proxy v3.00 build 7)
+
+=over 2
+
+=item fixed
+
+	testsuite to work with Base build 50
+	require Dicop::Base build 50
+	removed needless request_file() - handled by Base
+	cache_request: include ip_$peeraddress in info request
+	wcr lib: Total: lines 682, words 2207, chars 17168
+	21 tests ()
+
+=back
+
+=head2 2004-09-12 (Proxy v3.00 build 6)
+
+=over 2
+
+=item added
+
+=item fixed
+
+	small nits
+	wcr lib: Total: lines 695, words 2214, chars 17345
+	21 tests ()
+
+=back
+
+=head2 2004-09-09 (Proxy v3.00 build 5)
+
+=over 2
+
+=item added
+
+	doc/Dicopp.pod - from Dicopd.pod from Server
+	style BlueStreak
+	included code from Client for backend (e.g. talking to main server)
+
+=item fixed
+
+	amended doc/Proxy.pod
+	forgot to add doc/Trouble.pod to MANIFEST
+	wcr lib: Total: lines 691, words 2178, chars 17141
+	21 tests ()
+
+=back
+
+=head2 2004-09-08 (Proxy v3.00 build 4)
+
+=over 2
+
+=item added
+
+	display connect times (average, all, last) in main status page
+	cmd_status;type_style - select styles
+	Spring style - yellow on green with grey body
+	load connector method (via wget or LWP) and create useragent object
+	_connect_to_server() - first draft from Client.pm
+
+=item fixed
+
+	set defaults for name and title
+	testsuite works now
+	wcr lib: Total: lines 632, words 1968, chars 15354
+	21 tests ()
+
+=back
+
+=head2 2004-09-07 (Proxy v3.00 build 3)
+
+=over 2
+
+=item added
+
+	t/config.t, Dicop::Proxy::Config
+
+=item fixed
+
+	removed support for styles
+	brown/grey CSS color style for now
+	init some fields neccessary to make main status page work
+	proxy.cfg.sample with missing entries
+	generate help topics and include help from Dicop::Server
+	wcr lib: Total: lines 545, words 1651, chars 12754
+	19 tests (config, 3 still failing)
+	
+=back
+
+=head2 2004-09-06 (Proxy v3.00 build 2)
+
+=over 2
+
+=item added
+
+	added _after_config_read() to set config defaults
+	tpl/main.tpl, tpl/menu_main.inc, help.tpl, basecss.inc etc
+
+=item fixed
+
+	fixup def/requests.def to only contain relevant requests
+	amended NEW, INSTALL
+	include t/test-config/serverp.cfg into MANIFEST
+	rewrote main logic to be compatible with Dicop::Handler flow
+	wcr lib: Total: lines 345, words 1212, chars 89738
+	13 tests (2 failing due to reshuffle)
+
+=back
+
+=head2 2004-08-28 (Proxy v3.00 build 1)
+
+=over 2
+
+=item fixed
+
+	first version from Dicop-Server v3.00_43
+	wcr lib: Total: lines 310, words 1193, chars 8213
+	24 tests ()
+
+=back
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2004
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut

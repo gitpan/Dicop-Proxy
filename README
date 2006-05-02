@@ -1,0 +1,101 @@
+
+=pod
+
+=head1 README
+
+You can use perldoc to read this document: C<perldoc README>.
+
+=head1 INSTALLATION
+
+Prior to running the server/client you must install it. This document gives you
+a very broad overview of the neccessary steps, for detailed instructions refer
+please to the L<INSTALL> file (f.i. via perldoc INSTALL).
+
+=head2 Verify the package
+
+Before you do anything with the downloaded package, verify the signature.
+
+Download our GnuPG key from http://www.bsi.bund.de/produkte/dicop/download.htm
+and then check the detachd signature with:
+
+	gpg --verify Dicop-Proxy-3.00_11.tar.gz.asc
+
+(replace 3.00_11 with the actual version you got)
+
+If the signature does not verify ok, please notify us immidiately. B<DO NOT>
+run perl Makefile.PL or anythign else nor install the package when the
+signature cannot be verified ok. B<Your system might get compromised!>.
+
+=head2 Requirements
+
+You will need Perl v5.8.3 or better, preferable Perl v5.8.6, to run the proxy.
+
+You also need an HTTP or FTP server to serve the clients with files. The proxy
+will answer file requests from the clients with the URL of the file server.
+
+This can either be the same file server that the main server refers to, or
+a different one. But it absolutely needs to enable the client to download
+the same requested files.
+
+=over 2
+
+=item proxy
+
+When the proxy-daemon is running, you can connect to it via a web browser by
+using http://127.0.0.1:8889/ (the default port) and it should return the main
+page.
+
+=back
+
+If the proxy is running at another machine, simple connect to it
+like you would connect to any other web browser, by using the correct IP and
+port.
+
+You can use the perl documentation utility perldoc to get more information. The
+documentation is located in the subdirectory C<doc/>.
+
+
+=head2 Hardware
+
+The maschine to run the proxy should have at least 32 MB (no X-Windows) or
+64 MB (with X-Windows) so that no swapping occurs. A 200 Mhz x86 CPU does just
+fine for a couple hundred clients, although having one or more Ghz and a
+GigaByte or two RAM never hurt ;)
+
+
+=head2 Supported platforms
+
+The proxy was successfully under the following platforms:
+
+Linux SuSE 9.1
+--------------
+ Perl v5.8.5		test-environment
+
+Linux SuSE 7.3
+--------------
+ Perl v5.8.3		development
+
+It should work on Unix/Linux platforms, and even on Mac-OS. However, we can not
+guaranty that it will work. If you experience any problems, please contact us
+(see below).
+
+=head1 AUTHOR
+
+(C) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006.
+
+For licensing information please refer to the LICENSE file.
+
+=head2 Contact
+
+	Address: BSI
+		 Referat 123
+		 Godesberger Alle 185-189
+		 Bonn
+		 53175
+		 Germany
+	email:	 dicop@bsi.bund.de		(for public key see dicop.asc)
+	www:	 http://www.bsi.bund.de/
+
+Please file bug reports under L<http://rt.cpan.org>.
+
+=cut

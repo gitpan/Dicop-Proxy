@@ -1,0 +1,38 @@
+#!/usr/bin/perl -w -T
+
+# DiCoP - Distributed Computing in Perl - Proxy
+
+package DICOPD;
+use strict;
+
+BEGIN 
+  {
+  unshift @INC, 'lib';
+  $| = 1; 				# buffer off
+  }
+
+use vars qw/$data $cfg/;
+use Math::BigInt lib => 'GMP';		# use GMP if possible
+use Dicop::Proxy;
+
+require "basics"; require "daemon";	# include some routines
+
+BEGIN 
+  {
+  print STDERR scalar localtime() .
+   " DiCoP daemon v$Dicop::Proxy::VERSION (build $Dicop::Proxy::BUILD)" .
+   " using Dicop::Base $Dicop::Base::VERSION (build $Dicop::Base::BUILD) started\n";
+  }
+
+$data = Dicop::Proxy->new( cfg => shift || 'proxy.cfg' );
+die ("Couldn't initialize request handler") if ref($data) ne 'Dicop::Proxy'; 
+$cfg = $data->{config};
+
+# XXX TODO
+# we need to copy /etc/protocols to the local path if chroot is set
+main::check_user_and_group($cfg);
+
+my $c = main::make_config($cfg);
+DICOPD->run( %$c );
+
+1; # EOF

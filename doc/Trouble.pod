@@ -1,0 +1,90 @@
+
+=pod
+
+=head1 NAME
+
+TROUBLE - Troubleshooting
+
+Last update: 2005-06-22
+
+=head1 OVERVIEW
+
+This document provides you with help for certain troubling moments that
+are often experienced, but have (usually :) a simple solution.
+
+=head1 QUESTIONS AND ANSWERS
+
+=head2 The daemon does not start, or immidiately stops without any message
+
+Answer:
+
+=over 2
+
+=item *
+
+Run the daemon dicopd in the foreground, to see possible error messages.
+
+=item *
+
+Look into logs/error.log and logs/proxy.log for error messages.
+
+=item *
+
+Check that all files in C<logs/> are writeable by the user/group you want the
+daemon to run under. F.i. running it under user=dicop, group=dicop means
+that C<logs/>, C<logs/error.log> and C<logs/proxy.log> must be writable by 
+the user C<dicop>.
+
+=back
+
+=head2 The daemon complains about missing mail templates on startup?
+
+Answer:
+
+Make sure you have:
+
+        mailtxt_dir = mail
+
+in your config file (and not C<tpl/mail>). The prefix will be automatically
+added from whatever your C<tpl_dir> setting in the server config is.
+
+Also, did you remember to rename the sample mail text files in that
+directory by removing the C<.sample> prefix?
+
+=head2 I get a message about "bad protocol: tcp"
+
+Answer:
+
+This is message might appear as an error message at a client when it
+connects to the proxy.
+
+You are likely running Dicop-Proxy in a chroot environment and the
+file C</etc/protocols> is not available in the chroot.
+
+To solve this, create a directory C<etc/> in your Dicop-Proxy directory
+and copy the file C</etc/protocols> to it:
+
+	cd /dicop-proxy/		# or wherever you unpacked the proxy
+	mkdir etc
+	cp /etc/protocols etc/
+
+=head1 AUTHOR
+
+(C) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006.
+
+For licensing information please refer to the LICENSE file.
+
+=head1 CONTACT
+
+	Address: BSI
+	         Referat 123
+        	 Godesberger Alle 185-189
+	         Bonn
+	         53175
+	         Germany
+	email:   dicop@bsi.bund.de              (for public key see dicop.asc)
+	www:     http://www.bsi.bund.de/
+
+Please file bugreports under L<http://rt.cpan.org/>.
+
+=cut
