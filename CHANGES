@@ -7,6 +7,22 @@ This document details the complete changes from v3.01 onwards.
 
 v3.00 was seperated from Dicop-Server and is the first real, working version.
 
+=head2 2006-06-01 (Proxy v3.03)
+
+No functional changes:
+
+=over 2
+
+=item fixed
+
+	removed unused uptime() method
+	POD fixes, add POD tests
+	increase POD coverage to 100%
+	wcr lib: Total: lines 671, words 2215, chars 16674
+	43 tests
+
+=back
+
 =head2 2006-05-02 (Proxy v3.02)
 
 No functional changes:

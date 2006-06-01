@@ -12,7 +12,7 @@
 
 package Dicop::Proxy;
 use vars qw($VERSION $BUILD);
-$VERSION = '3.02';	# Current version of this package
+$VERSION = '3.03';	# Current version of this package
 $BUILD = 0;		# Current build of this package
 require  5.008003;	# requires this Perl version or later
 
@@ -64,7 +64,6 @@ sub is_proxy { 0; }
 
 sub version { $VERSION; }
 sub build { $BUILD; }
-sub uptime { 0; }
 
 sub _init
   {
@@ -413,7 +412,7 @@ __END__
 
 =head1 NAME
 
-Dicop::Proxy - routines for the proxy part of the server
+Dicop::Proxy - A proxy for a Dicop system
 
 =head1 SYNOPSIS
 
@@ -428,6 +427,8 @@ This module includes some routines that make up the logic of the proxy part
 of the server.
 
 This is a subclass of Dicop::Handler and overrides only the necc. methods.
+
+This package is used by C<dicopp> to implement a full Dicop-Proxy.
 
 =head1 REQUIRES
 
@@ -464,7 +465,7 @@ send cache.
 =head2 new()
 
 Create a new Dicop::Proxy object and init the data fields of it. Called by the
-server's init() method.
+servers init() method.
 
 =head2 talk_to_server()
 
@@ -491,6 +492,14 @@ Called for each chunk the client reports back.
 =head2 type()
 
 Returns the string 'proxy'.
+
+=head2 is_proxy()
+
+Returns true.
+
+=head2 output()
+
+Output a string to STDERR for debugging purposes.
 
 =head1 BUGS
 

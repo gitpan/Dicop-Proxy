@@ -12,8 +12,8 @@
 
 package Dicop::Proxy::Config;
 use vars qw($VERSION);
-$VERSION = 0.01;	# Current version of this package
-require  5.008;		# requires this Perl version or later
+$VERSION = 0.02;	# Current version of this package
+require  5.008003;	# requires this Perl version or later
 
 use strict;
 
@@ -112,36 +112,20 @@ __END__
 
 =head1 NAME
 
-  foreach my $key (qw/ 
-   log_dir def_dir msg_dir tpl_dir mailtxt_dir
-   /)
-    { $ALLOWED_KEYS->{$key} = 'dir'; }
-
-  $ALLOWED_KEYS;
-  }
-
-1; 
-
-__END__
-
-#############################################################################
-
-=pod
-
-=head1 NAME
-
-Dicop::Server::Config - define valid config keys
+Dicop::Proxy::Config - define valid config keys for a Dicop-Proxy
 
 =head1 SYNOPSIS
 
-	use Dicop::Server::Config;
+	use Dicop::Proxy::Config;
 	use Dicop::Config;
 
-	my $config = Dicop::Config->new('data/server.cfg', Dicop::Server::Config::allowed_keys() );
+	my $config = Dicop::Config->new(
+		'data/server.cfg', 
+		Dicop::Proxy::Config::allowed_keys() );
 
 =head1 REQUIRES
 
-perl5.008
+perl5.008003
 
 =head1 EXPORTS
 
@@ -155,7 +139,7 @@ This module contains a method to create the list of allowed config keys.
 
 =head2 allowed_keys()
 
-	$allowed_keys = Dicop::Server::Config::allowed_keys();
+	$allowed_keys = Dicop::Proxy::Config::allowed_keys();
 
 =head1 BUGS
 

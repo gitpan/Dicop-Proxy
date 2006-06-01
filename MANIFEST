@@ -21,6 +21,8 @@ build/gen_help.pl
 t/common.pl
 t/config.t
 t/proxypm.t
+t/pod.t				test POD correctness
+t/pod_cov.t			test POD coverage
 t/test-config/serverp.cfg
 def/request.def
 def/objects.def
